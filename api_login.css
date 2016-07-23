@@ -1,0 +1,16 @@
+.center-box { width: 450px; }
+.login-info input { width: 98%; }
+.login-info p { text-align: left; line-height: 30px; text-indent: 5px; }
+.verifycode { float: right; margin-top: -8px; position: relative; top: 35px; }
+#page_login .login-info input { width: 97%; }
+#page_login .login-info input[name=verifycode] { width: 340px; }
+input[disabled] { cursor: not-allowed; }
+input[type=submit][disabled] { background: #647d7e; cursor: default; }
+.box a { display: block; padding: 15px; margin: 0 auto; width: 85%; text-align: center; background: #e5e5e5; border: 1px solid #cdcdcd; border-radius: 5px; color: #000; }
+.box a:hover { border-color: #bbbbbb; background: #dedede; text-decoration: none; }
+
+@media (max-width: 550px){
+	.center-box { top: 75px; width: 85%; }
+	#page_login .login-info input[name=verifycode] { width: 97%; }
+	.verifycode { right: 20px; margin-top: -10px; position: absolute; top: auto; }
+}
