@@ -53,7 +53,7 @@ function template($file){
 	}
 	$path = ROOT."./template/{$file}.php";
 	if(file_exists($path)) return $path;
-	error::system_error("Missing template '{$file}'.");
+	kerror::system_error("Missing template '{$file}'.");
 }
 function dgmdate($timestamp, $d_format = 'Y-m-d H:i') {
 	$timestamp += 8 * 3600;

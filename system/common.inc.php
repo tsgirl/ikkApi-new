@@ -8,13 +8,13 @@ define('VERSION', '1.13.11.9');
 
 $blacklist = array(1013);
 
-if($_GET['debug']){
+//if($_GET['debug']){
 	define('DEBUG_ENABLED', true);
 	error_reporting(E_ALL ^ E_NOTICE);
-}else{
+/*}else{
 	define('DEBUG_ENABLED', false);
 	error_reporting(0);
-}
+}*/
 require_once SYSTEM_ROOT.'./class/core.php';
 $system = new kk_sign();
 if($uid && SYS_KEY && getSetting('SYS_KEY') != SYS_KEY){

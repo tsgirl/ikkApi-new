@@ -1,6 +1,6 @@
 <?php
 include 'system/common.inc.php';
-$url = authcode(pack('H*', $_POST['url']), 'DECODE', 'CLOUD-REGISTER');
+$url = authcode(pack('H*', $_REQUEST['url']), 'DECODE', 'CLOUD-REGISTER');
 $host_hash = addslashes(get_host_hash($url));
 $url = addslashes($url);
 if(!$host_hash) exit('-255');

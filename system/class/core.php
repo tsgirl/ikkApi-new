@@ -89,12 +89,105 @@ class db_mysql{
 		return mysql_close($this -> curlink);
 	}
 	function halt($message = '', $sql = ''){
-		error :: db_error($message, $sql);
+		kerror :: db_error($message, $sql);
 	}
 	function __destruct(){
 		$this -> close();
 	}
 }
+
+class db_mysqli {
+  var $curlink;
+  var $last_query;
+   function connect() {
+    global $_config;
+    $this->curlink = $this->_dbconnect($_config['db']['server'].':'.$_config['db']['port'], $_config['db']['username'], $_config['db']['password'], 'utf8', $_config['db']['name'], $_config['db']['pconnect']);
+  }
+   function _dbconnect($dbhost, $dbuser, $dbpw, $dbcharset, $dbname, $pconnect) {
+    $link = null;
+    if (!$link = mysqli_connect($dbhost, $dbuser, $dbpw)) {
+      $this->halt('Couldn\'t connect to MySQL Server');
+    } else {
+      $this->curlink = $link;
+      $serverset = $dbcharset ? 'character_set_connection='.$dbcharset.', character_set_results='.$dbcharset.', character_set_client=binary,sql_mode=\'\'' : '';
+      $serverset && mysqli_query($link, "SET $serverset");
+      $dbname && @mysqli_select_db($link, $dbname);
+    }
+    return $link;
+  }
+   function select_db($dbname) {
+    return mysqli_select_db($this->curlink, $dbname);
+  }
+   function fetch_array($query, $result_type = MYSQLI_ASSOC) {
+    return mysqli_fetch_array($query, $result_type);
+  }
+   function fetch_first($sql) {
+    return $this->fetch_array($this->query($sql));
+  }
+   function result_first($sql) {
+    return $this->result($this->query($sql), 0);
+  }
+   function query($sql, $type = '') {
+    if (!$this->curlink) $this->connect();
+    if (!($query = mysqli_query($this->curlink, $sql))) {
+      if ($type != 'SILENT') {
+        $this->halt('MySQL Query ERROR', $sql);
+      }
+    }
+    DEBUG::query_counter();
+    return $this->last_query = $query;
+  }
+   function affected_rows() {
+    return mysqli_affected_rows($this->curlink);
+  }
+   function error() {
+    return (($this->curlink) ? mysqli_error($this->curlink) : mysqli_error());
+  }
+   function errno() {
+    return intval(($this->curlink) ? mysqli_errno($this->curlink) : mysqli_errno());
+  }
+   function result($query, $row = 0) {
+    $query = mysqli_fetch_row($query)[$row];
+    return $query;
+  }
+   function num_rows($query) {
+    $query = mysqli_num_rows($query);
+    return $query;
+  }
+   function num_fields($query) {
+    return mysqli_num_fields($query);
+  }
+   function free_result($query) {
+    return mysqli_free_result($query);
+  }
+   function insert_id() {
+    return ($id = mysqli_insert_id($this->curlink)) >= 0 ? $id : $this->result($this->query("SELECT last_insert_id()"), 0);
+  }
+   function fetch_row($query) {
+    $query = mysqli_fetch_row($query);
+    return $query;
+  }
+   function fetch_fields($query) {
+    return mysqli_fetch_field($query);
+  }
+   function version() {
+    if (empty($this->version)) {
+      $this->version = mysqli_get_server_info($this->curlink);
+    }
+    return $this->version;
+  }
+   function close() {
+    return mysqli_close($this->curlink);
+  }
+   function halt($message = '', $sql = '') {
+    kerror::db_error($message, $sql);
+  }
+   function __destruct() {
+    $this->close();
+  }
+}
+
+
 class DB{
 	function delete($table, $condition, $limit = 0, $unbuffered = true){
 		if(empty($condition)){
@@ -185,7 +278,13 @@ class DB{
 	}
 	function & object(){
 		static $db;
-		if(empty($db)) $db = new db_mysql();
+    if (empty($db)) {
+      if (function_exists('mysql_connect')) {
+        $db = new db_mysql();
+      } else {
+        $db = new db_mysqli();
+      }
+    }
 		return $db;
 	}
 }
