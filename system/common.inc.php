@@ -17,6 +17,7 @@ $blacklist = array(1013);
 }*/
 require_once SYSTEM_ROOT.'./class/core.php';
 $system = new kk_sign();
+$system->init();
 if($uid && SYS_KEY && getSetting('SYS_KEY') != SYS_KEY){
 	saveSetting('SYS_KEY', SYS_KEY);
 }

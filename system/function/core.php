@@ -155,7 +155,7 @@ function dreferer(){
 	return $_SERVER['HTTP_REFERER'] && !strexists($_SERVER['HTTP_REFERER'], 'member') ? $_SERVER['HTTP_REFERER'] : './';
 }
 function strexists($string, $find) {
-	return !(strpos($string, $find) === FALSE);
+	return !(stristr($find, $string) === FALSE);
 }
 function cutstr($string, $length, $dot = ' ...') {
 	if(strlen($string) <= $length) return $string;

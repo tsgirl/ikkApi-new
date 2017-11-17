@@ -11,6 +11,6 @@ $sid = DB::insert('client', array(
 	'host' => $host_hash,
 	'url' => $url,
 ));
-echo "1\t{$sid}\t{$key}";
+exit("1\t{$sid}\t{$key}");
 
 ?>

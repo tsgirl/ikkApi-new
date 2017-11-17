@@ -28,8 +28,8 @@ if(defined('SAE_MYSQL_DB')){						// 已自动设置好，无需干预
 // ------------------ 非BAE、SAE 数据库设定 ------------------
 	$_config['db']['server'] = 'localhost';			// 数据库服务器地址
 	$_config['db']['port'] = '3306';				// 数据库端口
-	$_config['db']['username'] = 'yukarinrin';			// 数据库用户名
-	$_config['db']['password'] = 'tsgirl130309A';			// 数据库密码
+	$_config['db']['username'] = 'root';			// 数据库用户名
+	$_config['db']['password'] = 'tsgirl';			// 数据库密码
 	$_config['db']['name'] = 'kk_api';				// 数据库名
 //}
 // -------------- END 非BAE、SAE 数据库设定 ------------------
